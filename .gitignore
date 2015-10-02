@@ -1,0 +1,4 @@
+target/
+/*.log
+/*.h2.db
+/*.lock.db
