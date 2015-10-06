@@ -29,8 +29,3 @@ libraryDependencies ++= {
   )
 }
 
-initialCommands in console := """
-  |def time[R](block: => R):R = {
-  |  val t0 = System.nanoTime
-  |  try { block } finally { println("Elapsed time: " + (System.nanoTime - t0)/1000.0 + "us") }
-  |}""".stripMargin
