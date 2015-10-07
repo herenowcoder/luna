@@ -1,0 +1,3 @@
+#!/bin/sh
+war=$(ls target/scala-*/*.war)
+perl -pe "s|^  artifact: .*|  artifact: $war|" -i.bk .elasticbeanstalk/config.yml
