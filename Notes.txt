@@ -1,0 +1,6 @@
+eb: glasfish under docker is ok, but I don't know how to pass
+-Drun.mode=production to the container. I think app.type Tomcat
+had such option in Software Configuratio, here with Dockerized
+Glasshish there's only an option to set env variables. Hmmm...
+
+Other than that, eb is cool!
