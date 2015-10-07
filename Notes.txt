@@ -4,3 +4,103 @@ had such option in Software Configuratio, here with Dockerized
 Glasshish there's only an option to set env variables. Hmmm...
 
 Other than that, eb is cool!
+
+Ok, not going deeper into Glassfish issue w/ run.mode, because
+in general Tomcat looks faster. Here are results of simple
+measurements:
+
+---------------------+ Glassfish+Docker + ---- Tomcat ----
+deploy (w/o upload)  |          54s     |       20s
+deploy (w/ upload)   |        1m 4s     |       48s       
+env reconf (restart) |        1m27s     |     1m 4s
+
+Deploy without upload - time between "Environment update is starting."
+and "Environment update completed successfully." logs in the web console.
+
+Deploy with upload - time as seen when running: time eb deploy
+
+Longer time for Glassfish probably comes from the fact that it seems to
+rerun the whole docker container each deploy.
+
+
+Now superbench timings (under tomcat):
+$ sb -u http://luna.elasticbeanstalk.com -c15
+
+* dev mode:
+
+TPS: 17.6 (requests/second)
+Max: 2404.71942097957ms
+Min: 84.6076258511195ms
+Avg: 772.360795289091ms
+
+  50%   below 684ms
+  60%   below 721ms
+  70%   below 766ms
+  80%   below 867ms
+  90%   below 1819ms
+  95%   below 2060ms
+  98%   below 2157ms
+  99%   below 2405ms
+99.9%   below 2405ms
+
+* dev mode, after a while (jvm warm?):
+
+TPS: 24.1 (requests/second)
+Max: 1528.59806169724ms
+Min: 77.9253901277503ms
+Avg: 559.838454503389ms
+
+  50%   below 572ms
+  60%   below 599ms
+  70%   below 642ms
+  80%   below 750ms
+  90%   below 906ms
+  95%   below 974ms
+  98%   below 1289ms
+  99%   below 1529ms
+99.9%   below 1529ms
+
+
+* prod mode:
+
+TPS: 34.2 (requests/second)
+Max: 1642.71638866151ms
+Min: 61.9628403437822ms
+Avg: 380.282822218994ms
+
+  50%   below 178ms
+  60%   below 184ms
+  70%   below 191ms
+  80%   below 198ms
+  90%   below 1622ms
+  95%   below 1626ms
+  98%   below 1642ms
+  99%   below 1643ms
+99.9%   below 1643ms
+
+* prod mode, after a while (jvm warm?):
+
+TPS: 83.3 (requests/second)
+Max: 348.958496666562ms
+Min: 49.1180485644489ms
+Avg: 135.360774169105ms
+
+  50%   below 124ms
+  60%   below 130ms
+  70%   below 134ms
+  80%   below 147ms
+  90%   below 230ms
+  95%   below 308ms
+  98%   below 346ms
+  99%   below 349ms
+99.9%   below 349ms
+
+
+About version labelling:
+Version label seen in the console can be set by eb deploy -l ...
+However, the default is good -- it's 4 chars of commit sha.
+
+Other cool things:
+eb health command
+
+
