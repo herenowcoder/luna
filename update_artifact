@@ -1,3 +1,11 @@
-#!/bin/sh
+#!/bin/bash
+config='.elasticbeanstalk/config.yml'
 war=$(ls target/scala-*/*.war)
-perl -pe "s|^  artifact: .*|  artifact: $war|" -i.bk .elasticbeanstalk/config.yml
+if [ $(grep -cE '^  artifact: ' $config) -eq 0 ]; then
+    cat >> $config <<EOH
+deploy:
+  artifact: $war
+EOH
+else
+  perl -pe "s|^  artifact: .*|  artifact: $war|" -i.bk $config
+fi
