@@ -2,13 +2,20 @@ package code.snippet
 
 import scala.xml.NodeSeq
 import net.liftweb.util.Helpers._
+import net.liftweb.http.js.JE
+import net.liftweb.http.js.JsCmds.{SetHtml} // needed very soon
 
 class Luna {
   
   def moonpix = {
-    "a [onclick]" #> """$(this).fadeTo(1000, 0.01, function() {
-      $(this).fadeTo(2000, 1.0)
-      })"""
+    "a [onclick]" #> moonpix_fade
+  }
+
+  def moonpix_fade = {
+    val fade = "$(this).fadeTo"
+    JE.Call(fade, 1000, 0.01, JE.AnonFunc(
+      JE.Call(fade, 2000, 1.0).cmd
+    ))
   }
 
   def logo = (
