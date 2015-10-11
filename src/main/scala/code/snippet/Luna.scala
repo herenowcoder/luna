@@ -11,7 +11,7 @@ class Luna {
     "a [onclick]" #> moonpix_fade
   }
 
-  def moonpix_fade = {
+  private def moonpix_fade = {
     val fade = "$(this).fadeTo"
     JE.Call(fade, 1000, 0.01, JE.AnonFunc(
       JE.Call(fade, 2000, 1.0).cmd
