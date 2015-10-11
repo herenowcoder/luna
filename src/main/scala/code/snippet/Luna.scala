@@ -1,5 +1,4 @@
-package code
-package snippet
+package code.snippet
 
 import scala.xml.NodeSeq
 import net.liftweb.util.Helpers._
