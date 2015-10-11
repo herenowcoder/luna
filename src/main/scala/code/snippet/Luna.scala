@@ -5,7 +5,11 @@ import net.liftweb.util.Helpers._
 
 class Luna {
   
-  def moonpix(x: NodeSeq) = x //niy
+  def moonpix = {
+    "a [onclick]" #> """$(this).fadeTo(1000, 0.01, function() {
+      $(this).fadeTo(2000, 1.0)
+      })"""
+  }
 
   def logo = (
     <p/>
