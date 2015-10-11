@@ -1,0 +1,2 @@
+cool ImageMagick option to resize to specific height w/ aspect ratio:
+convert -resize x100 file1 file2
