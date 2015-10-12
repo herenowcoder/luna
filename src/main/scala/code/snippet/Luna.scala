@@ -14,9 +14,11 @@ class Luna {
     "a [onclick]" #> moonpixSwitch(moonpixList(1), 1 second, 2 seconds) &
     "img [src]"   #> (moonpixPrefix + moonpixList.head)
   }
-  // todo: next step - load actual moonpix via ajax and register new ajax to change it
+  // todo: next step - load actual moonpix via ajax
+  //   and register new ajax to change it
 
-  private def moonpixSwitch(newMoonpix: String, fadeOutTime: TimeSpan, fadeInTime: TimeSpan): JsExp = {
+  private def moonpixSwitch(newMoonpix: String, 
+    fadeOutTime: TimeSpan, fadeInTime: TimeSpan): JsExp = {
     val fade = "$(this).fadeTo"
     JE.Call(fade, fadeOutTime.toMillis, 0.01, JE.AnonFunc(
       JE.Call("$('img', this).attr", "src", moonpixPrefix+newMoonpix).cmd &
@@ -34,7 +36,8 @@ class Luna {
 
   def placeholder: NodeSeq = (
     <p/>
-    <div style="font:italic small-caps 72px fantasy; text-align:center; color:#fec">
+    <div style=
+      "font:italic small-caps 72px fantasy; text-align:center; color:#fec">
       Coming Soon!!
     </div>
   )
