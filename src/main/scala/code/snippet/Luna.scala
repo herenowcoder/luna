@@ -2,19 +2,22 @@ package code.snippet
 
 import scala.xml.NodeSeq
 import net.liftweb.util.Helpers._
-import net.liftweb.http.js.JE
+import net.liftweb.http.js.{JsExp,JE}
 import net.liftweb.http.js.JsCmds.{SetHtml} // needed very soon
 
 class Luna {
-  
+  val moonpixPrefix = "/imported/luna-ngen/images/"
+  val moonpixList = Seq("Moonburn_small.jpg", "Golden_Moon_small.jpg")
+
   def moonpix = {
-    "a [onclick]" #> moonpix_fade
+    "a [onclick]" #> moonpixFade(1 second, 2 seconds) &
+    "img [src]"   #> (moonpixPrefix + moonpixList.head)
   }
 
-  private def moonpix_fade = {
+  private def moonpixFade(fadeOutTime: TimeSpan, fadeInTime: TimeSpan): JsExp = {
     val fade = "$(this).fadeTo"
-    JE.Call(fade, 1000, 0.01, JE.AnonFunc(
-      JE.Call(fade, 2000, 1.0).cmd
+    JE.Call(fade, fadeOutTime.toMillis, 0.01, JE.AnonFunc(
+      JE.Call(fade, fadeInTime.toMillis, 1.0).cmd
     ))
   }
 
