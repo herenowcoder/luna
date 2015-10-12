@@ -14,6 +14,7 @@ class Luna {
     "a [onclick]" #> moonpixSwitch(moonpixList(1), 1 second, 2 seconds) &
     "img [src]"   #> (moonpixPrefix + moonpixList.head)
   }
+  // todo: next step - load actual moonpix via ajax and register new ajax to change it
 
   private def moonpixSwitch(newMoonpix: String, fadeOutTime: TimeSpan, fadeInTime: TimeSpan): JsExp = {
     val fade = "$(this).fadeTo"
