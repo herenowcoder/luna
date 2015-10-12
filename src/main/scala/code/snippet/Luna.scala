@@ -42,7 +42,7 @@ class Luna {
   def copyright: NodeSeq = (
     <div id="copyright"
       style="font:small-caps 15px normal; text-align:center; color:#ccc">
-      © <span style="font-size:80%">2013 </span>
+      © <span style="font-size:80%">2015 </span>
       <a href="http://dualtech.com.pl">Dual Tech</a>.
       Crafted using <span class="link">Vibrant Design</span>™.<br/>
       <a href="http://validator.w3.org/check/referer">Valid</a> Html.
