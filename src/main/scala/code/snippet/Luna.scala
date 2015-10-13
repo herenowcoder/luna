@@ -17,7 +17,7 @@ class Luna {
   // todo: next step - load actual moonpix via ajax
   //   and register new ajax to change it
 
-  private def moonpixSwitch(newMoonpix: String, 
+  private def moonpixSwitch(newMoonpix: String,
     fadeOutTime: TimeSpan, fadeInTime: TimeSpan): JsExp = {
     val fade = "$(this).fadeTo"
     JE.Call(fade, fadeOutTime.toMillis, 0.01, JE.AnonFunc(
