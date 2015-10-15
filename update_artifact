@@ -1,6 +1,7 @@
 #!/bin/bash
 config='.elasticbeanstalk/config.yml'
 war=$(ls -t target/scala-*/*.war | head -1)
+[ -z "$war" ] && exit 1
 if [ $(grep -cE '^  artifact: ' $config) -eq 0 ]; then
     cat >> $config <<EOH
 deploy:
