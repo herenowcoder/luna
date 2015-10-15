@@ -10,3 +10,5 @@ EOH
 else
   perl -pe "s|^  artifact: .*|  artifact: $war|" -i.bk $config
 fi
+
+echo "artifact set to $war"
