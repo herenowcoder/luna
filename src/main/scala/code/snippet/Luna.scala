@@ -5,18 +5,21 @@ import net.liftweb.util.CssSel
 import net.liftweb.util.Helpers._
 import net.liftweb.http.S
 import net.liftweb.http.js.{JsExp,JE}
+import net.liftweb.http.js.JE.{JsFunc,JsRaw}
 import net.liftweb.http.js.jquery.JqJE.{Jq,JqAttr}
 
 class Luna {
   val moonpixPrefix = "/imported/luna-ngen/images/"
   val moonpixList = Array("Moonburn_small.jpg", "Golden_Moon_small.jpg")
 
+  private def fade(params: JsExp*) = JsFunc("fadeTo", params:_*)
+
   // snippet impl changed to val as (for now) this needs to get evaluated
   // only once
   val moonpix: CssSel = {
-    val selector = "$('#moonbox a')"
+    val selector: JsExp = Jq("#moonbox a")
     S.appendJs(
-      JE.Call(selector+".fadeTo", 4.seconds.toMillis, 1.0).cmd
+      selector ~> fade(4.seconds.toMillis, 1.0) cmd
     )
     "a [style]"   #> "opacity: 0.01" &
     "a [onclick]" #> moonpixSwitch(moonpixList(1), 1 second, 2 seconds) &
@@ -27,10 +30,11 @@ class Luna {
 
   private def moonpixSwitch(newMoonpix: String,
     fadeOutTime: TimeSpan, fadeInTime: TimeSpan): JsExp = {
-    val fade = "$(this).fadeTo"
-    JE.Call(fade, fadeOutTime.toMillis, 0.01, JE.AnonFunc(
-      JE.Call("$('img', this).attr", "src", moonpixPrefix+newMoonpix).cmd &
-      JE.Call(fade, fadeInTime.toMillis, 1.0).cmd
+    val selector = JsRaw("$(this)")
+    val innerSelector = JsRaw("""$("img", this)""")
+    selector ~> fade(fadeOutTime.toMillis, 0.01, JE.AnonFunc(
+      (innerSelector ~> JqAttr("src", moonpixPrefix + newMoonpix)).cmd &
+      (selector ~> fade(fadeInTime.toMillis, 1.0)).cmd
     ))
   }
 
