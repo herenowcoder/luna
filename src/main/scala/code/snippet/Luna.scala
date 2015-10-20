@@ -14,8 +14,9 @@ class Luna {
   // snippet impl changed to val as (for now) this needs to get evaluated
   // only once
   val moonpix: CssSel = {
+    val selector = "$('#moonbox a')"
     S.appendJs(
-      JE.Call("$('#moonbox a').fadeTo", 7000, 1.0).cmd
+      JE.Call(selector+".fadeTo", 7000, 1.0).cmd
     )
     "a [style]"   #> "opacity: 0.01" &
     "a [onclick]" #> moonpixSwitch(moonpixList(1), 1 second, 2 seconds) &
