@@ -13,7 +13,7 @@ class Luna {
   val moonpixList = Array("Moonburn_small.jpg", "Golden_Moon_small.jpg")
 
   private val jqThis = JsRaw("$(this)")
-  private def jqInThis(selector: String) = JsRaw(s"""$$("$selector",this)""")
+  private def jqThisWith(selector: String) = JsRaw(s"""$$("$selector",this)""")
 
   private def fade(time: TimeSpan, toVal: Double, cb: Option[JsExp] = None) = {
     cb match {
@@ -39,7 +39,7 @@ class Luna {
   private def moonpixSwitch(newMoonpix: String,
     fadeOutTime: TimeSpan, fadeInTime: TimeSpan): JsExp = {
     val selector = jqThis
-    val innerSelector = jqInThis("img")
+    val innerSelector = jqThisWith("img")
     selector ~> fade(fadeOutTime, 0.01, Some(JE.AnonFunc(
       (innerSelector ~> JqAttr("src", moonpixPrefix + newMoonpix)).cmd &
       (selector ~> fade(fadeInTime, 1.0)).cmd
