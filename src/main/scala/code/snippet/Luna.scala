@@ -33,9 +33,15 @@ class Luna {
     "a [onclick]" #> moonpixSwitch(moonpixList(1), 1 second, 2 seconds) &
     "img [src]"   #> (moonpixPrefix + moonpixList.head)
   }
-  // todo: next step - load actual moonpix via ajax
-  //   and register new ajax to change it
 
+  /* moonpix todo:
+      - really get random pics on each click
+      - switch pics without clicking, via some semi-randomized timeout
+      - refactor
+      - to be classy & elegant, bigger refactor to have sth like "emerge" element
+        in Smalltalk ver - then share code of first run and subsequent runs
+        (requires switching via jqReplace or similar)
+  */
   private def moonpixSwitch(newMoonpix: String,
     fadeOutTime: TimeSpan, fadeInTime: TimeSpan): JsExp = {
     val selector = jqThis
