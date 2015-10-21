@@ -12,14 +12,19 @@ class Luna {
   val moonpixPrefix = "/imported/luna-ngen/images/"
   val moonpixList = Array("Moonburn_small.jpg", "Golden_Moon_small.jpg")
 
-  private def fade(params: JsExp*) = JsFunc("fadeTo", params:_*)
+  private def fade(time: TimeSpan, toVal: Double, cb: Option[JsExp] = None) = {
+    cb match {
+      case None => JsFunc("fadeTo", time toMillis, toVal)
+      case Some(f) => JsFunc("fadeTo", time toMillis, toVal, f)
+    }
+  }
 
   // snippet impl changed to val as (for now) this needs to get evaluated
   // only once
   val moonpix: CssSel = {
     val selector: JsExp = Jq("#moonbox a")
     S.appendJs(
-      selector ~> fade(4.seconds.toMillis, 1.0) cmd
+      selector ~> fade(4 seconds, 1.0) cmd
     )
     "a [style]"   #> "opacity: 0.01" &
     "a [onclick]" #> moonpixSwitch(moonpixList(1), 1 second, 2 seconds) &
@@ -32,10 +37,10 @@ class Luna {
     fadeOutTime: TimeSpan, fadeInTime: TimeSpan): JsExp = {
     val selector = JsRaw("$(this)")
     val innerSelector = JsRaw("""$("img", this)""")
-    selector ~> fade(fadeOutTime.toMillis, 0.01, JE.AnonFunc(
+    selector ~> fade(fadeOutTime, 0.01, Some(JE.AnonFunc(
       (innerSelector ~> JqAttr("src", moonpixPrefix + newMoonpix)).cmd &
-      (selector ~> fade(fadeInTime.toMillis, 1.0)).cmd
-    ))
+      (selector ~> fade(fadeInTime, 1.0)).cmd
+    )))
   }
 
   val logo: NodeSeq = (
