@@ -5,14 +5,17 @@ import net.liftweb.util.CssSel
 import net.liftweb.util.Helpers._
 import net.liftweb.http.S
 import net.liftweb.http.js.{JsExp,JE}
-import net.liftweb.http.js.JE.{JsFunc,JsRaw}
 import net.liftweb.http.js.jquery.JqJE.{Jq,JqAttr}
 
 object JqGoodies {
-  val jqThis = JsRaw("$(this)")
-  def jqThisWith(selector: String) = JsRaw(s"""$$("$selector",this)""")
+  import net.liftweb.http.js.{JsExp,JsMember}
+  import net.liftweb.http.js.JE.{JsFunc,JsRaw}
 
-  def fade(time: TimeSpan, toVal: Double, cb: Option[JsExp] = None) = {
+  val jqThis: JsExp = JsRaw("$(this)")
+  def jqThisWith(selector: String): JsExp = JsRaw(s"""$$("$selector",this)""")
+
+  def fade(time: TimeSpan, toVal: Double,
+      cb: Option[JsExp] = None): JsMember = {
     cb match {
       case None => JsFunc("fadeTo", time toMillis, toVal)
       case Some(f) => JsFunc("fadeTo", time toMillis, toVal, f)
