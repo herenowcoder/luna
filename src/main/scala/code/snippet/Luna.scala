@@ -43,6 +43,7 @@ class Luna {
   }
 
   /* moonpix todo:
+      - change background if pix requires it
       - really get random pics on each click
       - switch pics without clicking, via some semi-randomized timeout
       - refactor
