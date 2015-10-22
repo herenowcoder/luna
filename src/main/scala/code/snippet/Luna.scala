@@ -15,8 +15,8 @@ object JqGoodies {
   def jqThisWith(selector: String): JsExp = JsRaw(s"""$$("$selector",this)""")
 
   def fade(time: TimeSpan, toVal: Double,
-      cb: Option[JsExp] = None): JsMember = {
-    cb match {
+      callback: Option[JsExp] = None): JsMember = {
+    callback match {
       case None => JsFunc("fadeTo", time toMillis, toVal)
       case Some(f) => JsFunc("fadeTo", time toMillis, toVal, f)
     }
