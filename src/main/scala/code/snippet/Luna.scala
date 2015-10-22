@@ -4,7 +4,8 @@ import scala.xml.NodeSeq
 import net.liftweb.util.CssSel
 import net.liftweb.util.Helpers._
 import net.liftweb.http.S
-import net.liftweb.http.js.{JsExp,JE}
+import net.liftweb.http.js.JsExp
+import net.liftweb.http.js.JE.{AnonFunc => JsAnonFunc} 
 import net.liftweb.http.js.jquery.JqJE.{Jq,JqAttr}
 
 object JqGoodies {
@@ -15,7 +16,7 @@ object JqGoodies {
   def jqThisWith(selector: String): JsExp = JsRaw(s"""$$("$selector",this)""")
 
   def fade(time: TimeSpan, toVal: Double,
-      callback: Option[JsExp] = None): JsMember = {
+      callback: Option[JsAnonFunc] = None): JsMember = {
     callback match {
       case None => JsFunc("fadeTo", time toMillis, toVal)
       case Some(f) => JsFunc("fadeTo", time toMillis, toVal, f)
@@ -53,7 +54,7 @@ class Luna {
     fadeOutTime: TimeSpan, fadeInTime: TimeSpan): JsExp = {
     val selector = jqThis
     val innerSelector = jqThisWith("img")
-    selector ~> fade(fadeOutTime, 0.01, Some(JE.AnonFunc(
+    selector ~> fade(fadeOutTime, 0.01, Some(JsAnonFunc(
       (innerSelector ~> JqAttr("src", moonpixPrefix + newMoonpix)).cmd &
       (selector ~> fade(fadeInTime, 1.0)).cmd
     )))
