@@ -8,19 +8,23 @@ import net.liftweb.http.js.{JsExp,JE}
 import net.liftweb.http.js.JE.{JsFunc,JsRaw}
 import net.liftweb.http.js.jquery.JqJE.{Jq,JqAttr}
 
-class Luna {
-  val moonpixPrefix = "/imported/luna-ngen/images/"
-  val moonpixList = Array("Moonburn_small.jpg", "Golden_Moon_small.jpg")
+object JqGoodies {
+  val jqThis = JsRaw("$(this)")
+  def jqThisWith(selector: String) = JsRaw(s"""$$("$selector",this)""")
 
-  private val jqThis = JsRaw("$(this)")
-  private def jqThisWith(selector: String) = JsRaw(s"""$$("$selector",this)""")
-
-  private def fade(time: TimeSpan, toVal: Double, cb: Option[JsExp] = None) = {
+  def fade(time: TimeSpan, toVal: Double, cb: Option[JsExp] = None) = {
     cb match {
       case None => JsFunc("fadeTo", time toMillis, toVal)
       case Some(f) => JsFunc("fadeTo", time toMillis, toVal, f)
     }
   }
+}
+
+class Luna {
+  import JqGoodies._
+
+  val moonpixPrefix = "/imported/luna-ngen/images/"
+  val moonpixList = Array("Moonburn_small.jpg", "Golden_Moon_small.jpg")
 
   // snippet impl changed to val as (for now) this needs to get evaluated
   // only once
