@@ -52,7 +52,7 @@ class Luna {
     val selector: JsExp = Jq("#moonbox a")
     val startingPic = moonpicTab(4)
     S.appendJs(
-      pageBg(startingPic.bg).cmd &
+      pageBg(startingPic bg).cmd &
       (selector ~> fade(4 seconds, 1.0)).cmd
     )
     "img [src]"   #> startingPic.path &
@@ -76,8 +76,8 @@ class Luna {
     val selector = jqThis
     val innerSelector = jqThisWith("img")
     selector ~> fade(fadeOutTime, 0.01, Some(JsAnonFunc(
-      pageBg(newPic.bg).cmd &
-      (innerSelector ~> JqAttr("src", newPic.path)).cmd &
+      pageBg(newPic bg).cmd &
+      (innerSelector ~> JqAttr("src", newPic path)).cmd &
       (selector ~> fade(fadeInTime, 1.0)).cmd
     )))
   }
