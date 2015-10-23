@@ -50,12 +50,12 @@ class Luna {
   // only once
   val moonpix: CssSel = {
     val selector: JsExp = Jq("#moonbox a")
-    val pic = moonpixTab(4)
+    val startingPic = moonpixTab(4)
     S.appendJs(
-      pageBg(pic.bg).cmd &
+      pageBg(startingPic.bg).cmd &
       (selector ~> fade(4 seconds, 1.0)).cmd
     )
-    "img [src]"   #> pic.path &
+    "img [src]"   #> startingPic.path &
     "a [style]"   #> "opacity: 0.01" &
     "a [onclick]" #> moonpixSwitch(moonpixTab(0), 1 second, 2 seconds)
   }
