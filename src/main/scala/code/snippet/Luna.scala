@@ -32,45 +32,37 @@ object JqGoodies {
 class Luna {
   import JqGoodies._
 
-  val moonpixPrefix = "/imported/luna-ngen/images/"
-
-  abstract trait Pic {
-    def unfold() = moonpixP(this)
+  class Moonpic(name: String, var bg: String) {
+    val moonpixPrefix = "/imported/luna-ngen/images/"
+    def path = moonpixPrefix + s"${name}_small.jpg"
   }
-  case class PicBlack(name: String) extends Pic
-  case class PicWithBg(name: String, bg: String) extends Pic
+  object Pic {
+    def apply(name: String, bg: String = "#000") = new Moonpic(name, bg)
+  }
 
   val moonpixTab = Array(
-    PicBlack("Moonburn"), PicBlack("Golden_Moon"),
-    PicBlack("Lunar_eclipse_June_2011"), PicBlack("Solar_eclipse_1999"),
-    PicWithBg("Solar_eclipse_May_2013", "#130101")
+    Pic("Moonburn"), Pic("Golden_Moon"),
+    Pic("Lunar_eclipse_June_2011"), Pic("Solar_eclipse_1999"),
+    Pic("Solar_eclipse_May_2013", "#130101")
   )
-
-  private def moonpixP(pic: Pic): (String, String) = {
-    val (name, bg) = pic match {
-      case PicBlack(name) => (name, "#000")
-      case PicWithBg(name, bg) => (name, bg)
-    }
-    (s"${name}_small.jpg", bg)
-  }
 
   // snippet impl changed to val as (for now) this needs to get evaluated
   // only once
   val moonpix: CssSel = {
     val selector: JsExp = Jq("#moonbox a")
-    val (pixFile, bg) = moonpixTab(4).unfold
+    val pic = moonpixTab(4)
     S.appendJs(
-      pageBg(bg).cmd &
+      pageBg(pic.bg).cmd &
       (selector ~> fade(4 seconds, 1.0)).cmd
     )
+    "img [src]"   #> pic.path &
     "a [style]"   #> "opacity: 0.01" &
-    "a [onclick]" #> moonpixSwitch(moonpixTab(0), 1 second, 2 seconds) &
-    "img [src]"   #> (moonpixPrefix + pixFile)
+    "a [onclick]" #> moonpixSwitch(moonpixTab(0), 1 second, 2 seconds)
   }
 
   /* moonpix todo:
       + change background if pix requires it
-      - simplify Pic (just class with default bg param in ctor)
+      + simplify Moonpic (just class with default bg param in ctor)
       - really get random pics on each click
       - switch pics without clicking, via some semi-randomized timeout
       - refactor
@@ -78,14 +70,13 @@ class Luna {
         in Smalltalk ver - then share code of first run and subsequent runs
         (requires switching via jqReplace or similar)
   */
-  private def moonpixSwitch(newMoonpix: Pic,
+  private def moonpixSwitch(newPic: Moonpic,
     fadeOutTime: TimeSpan, fadeInTime: TimeSpan): JsExp = {
     val selector = jqThis
     val innerSelector = jqThisWith("img")
-    val (newFile, newBg) = newMoonpix.unfold
     selector ~> fade(fadeOutTime, 0.01, Some(JsAnonFunc(
-      pageBg(newBg).cmd &
-      (innerSelector ~> JqAttr("src", moonpixPrefix + newFile)).cmd &
+      pageBg(newPic.bg).cmd &
+      (innerSelector ~> JqAttr("src", newPic.path)).cmd &
       (selector ~> fade(fadeInTime, 1.0)).cmd
     )))
   }
