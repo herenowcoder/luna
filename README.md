@@ -1,6 +1,6 @@
 # luna
 
-[![Build Status](https://travis-ci.org/herenowcoder/luna.svg?branch=master)](https://travis-ci.org/herenowcoder/luna)
+[ ![Codeship Status](https://codeship.com/projects/59cbf990-5be9-0133-9599-42612c8c8541/status?branch=master)](https://codeship.com/projects/110870)
 
 ### running the code
 
