@@ -63,6 +63,7 @@ class Luna {
   /* moonpic todo:
       + change background if pix requires it
       + simplify Moonpic (just class with default bg param in ctor)
+      - gradient bg change between current and next
       - really get random pics on each click
       - switch pics without clicking, via some semi-randomized timeout
       - refactor
