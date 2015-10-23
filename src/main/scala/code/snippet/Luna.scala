@@ -12,8 +12,10 @@ object JqGoodies {
   import net.liftweb.http.js.{JsExp,JsMember}
   import net.liftweb.http.js.JE.{JsFunc,JsRaw}
 
+  def q(s: String) = "\"" + s + "\""
+
   val jqThis: JsExp = JsRaw("$(this)")
-  def jqThisWith(selector: String): JsExp = JsRaw(s"""$$("$selector",this)""")
+  def jqThisWith(selector: String): JsExp = JsRaw(s"$$(${q(selector)},this)")
 
   def fade(time: TimeSpan, toVal: Double,
       callback: Option[JsAnonFunc] = None): JsMember = {
@@ -22,28 +24,53 @@ object JqGoodies {
       case Some(f) => JsFunc("fadeTo", time toMillis, toVal, f)
     }
   }
+
+  def pageBg(rgb: String): JsExp =
+    JsRaw(s"document.body.style.background=${q(rgb)}")
 }
 
 class Luna {
   import JqGoodies._
 
   val moonpixPrefix = "/imported/luna-ngen/images/"
-  val moonpixList = Array("Moonburn_small.jpg", "Golden_Moon_small.jpg")
+
+  abstract trait Pic {
+    def unfold() = moonpixP(this)
+  }
+  case class PicBlack(name: String) extends Pic
+  case class PicWithBg(name: String, bg: String) extends Pic
+
+  val moonpixTab = Array(
+    PicBlack("Moonburn"), PicBlack("Golden_Moon"),
+    PicBlack("Lunar_eclipse_June_2011"), PicBlack("Solar_eclipse_1999"),
+    PicWithBg("Solar_eclipse_May_2013", "#130101")
+  )
+
+  private def moonpixP(pic: Pic): (String, String) = {
+    val (name, bg) = pic match {
+      case PicBlack(name) => (name, "#000")
+      case PicWithBg(name, bg) => (name, bg)
+    }
+    (s"${name}_small.jpg", bg)
+  }
 
   // snippet impl changed to val as (for now) this needs to get evaluated
   // only once
   val moonpix: CssSel = {
     val selector: JsExp = Jq("#moonbox a")
+    val (pixFile, bg) = moonpixTab(4).unfold
     S.appendJs(
-      selector ~> fade(4 seconds, 1.0) cmd
+      pageBg(bg).cmd &
+      (selector ~> fade(4 seconds, 1.0)).cmd
     )
     "a [style]"   #> "opacity: 0.01" &
-    "a [onclick]" #> moonpixSwitch(moonpixList(1), 1 second, 2 seconds) &
-    "img [src]"   #> (moonpixPrefix + moonpixList.head)
+    "a [onclick]" #> moonpixSwitch(moonpixTab(0), 1 second, 2 seconds) &
+    "img [src]"   #> (moonpixPrefix + pixFile)
   }
 
   /* moonpix todo:
-      - change background if pix requires it
+      + change background if pix requires it
+      - simplify Pic (just class with default bg param in ctor)
       - really get random pics on each click
       - switch pics without clicking, via some semi-randomized timeout
       - refactor
@@ -51,12 +78,14 @@ class Luna {
         in Smalltalk ver - then share code of first run and subsequent runs
         (requires switching via jqReplace or similar)
   */
-  private def moonpixSwitch(newMoonpix: String,
+  private def moonpixSwitch(newMoonpix: Pic,
     fadeOutTime: TimeSpan, fadeInTime: TimeSpan): JsExp = {
     val selector = jqThis
     val innerSelector = jqThisWith("img")
+    val (newFile, newBg) = newMoonpix.unfold
     selector ~> fade(fadeOutTime, 0.01, Some(JsAnonFunc(
-      (innerSelector ~> JqAttr("src", moonpixPrefix + newMoonpix)).cmd &
+      pageBg(newBg).cmd &
+      (innerSelector ~> JqAttr("src", moonpixPrefix + newFile)).cmd &
       (selector ~> fade(fadeInTime, 1.0)).cmd
     )))
   }
