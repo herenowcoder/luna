@@ -8,7 +8,7 @@ import net.liftweb.http.js.JsExp
 import net.liftweb.http.js.JE.{AnonFunc => JsAnonFunc} 
 import net.liftweb.http.js.jquery.JqJE.{Jq,JqAttr}
 
-object JqGoodies {
+object JsGoodies {
   import net.liftweb.http.js.{JsExp,JsMember}
   import net.liftweb.http.js.JE.{JsFunc,JsRaw}
 
@@ -30,7 +30,7 @@ object JqGoodies {
 }
 
 class Luna {
-  import JqGoodies._
+  import JsGoodies._
 
   class Moonpic(name: String, var bg: String) {
     val moonpicPrefix = "/imported/luna-ngen/images/"
