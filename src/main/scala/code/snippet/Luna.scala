@@ -8,29 +8,9 @@ import net.liftweb.http.js.JsExp
 import net.liftweb.http.js.JE.{AnonFunc => JsAnonFunc} 
 import net.liftweb.http.js.jquery.JqJE.{Jq,JqAttr}
 
-object JsGoodies {
-  import net.liftweb.http.js.{JsExp,JsMember}
-  import net.liftweb.http.js.JE.{JsFunc,JsRaw}
-
-  def q(s: String) = "\"" + s + "\""
-
-  val jqThis: JsExp = JsRaw("$(this)")
-  def jqThisWith(selector: String): JsExp = JsRaw(s"$$(${q(selector)},this)")
-
-  def fade(time: TimeSpan, toVal: Double,
-      callback: Option[JsAnonFunc] = None): JsMember = {
-    callback match {
-      case None => JsFunc("fadeTo", time toMillis, toVal)
-      case Some(f) => JsFunc("fadeTo", time toMillis, toVal, f)
-    }
-  }
-
-  def pageBg(rgb: String): JsExp =
-    JsRaw(s"document.body.style.background=${q(rgb)}")
-}
+import code.lib.JsGoodies._
 
 class Luna {
-  import JsGoodies._
 
   class Moonpic(name: String, var bg: String) {
     val moonpicPrefix = "/imported/luna-ngen/images/"
