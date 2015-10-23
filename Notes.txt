@@ -105,5 +105,5 @@ eb health command
 
 
 Impl notes:
-Don't load initial moonpix via Ajax because there can be visible 'glitch'
+Don't load initial moonpic via Ajax because there can be visible 'glitch'
 between first "static" img and the one loaded at the end of page.

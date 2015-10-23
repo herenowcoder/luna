@@ -33,14 +33,14 @@ class Luna {
   import JqGoodies._
 
   class Moonpic(name: String, var bg: String) {
-    val moonpixPrefix = "/imported/luna-ngen/images/"
-    def path = moonpixPrefix + s"${name}_small.jpg"
+    val moonpicPrefix = "/imported/luna-ngen/images/"
+    def path = moonpicPrefix + s"${name}_small.jpg"
   }
   object Pic {
     def apply(name: String, bg: String = "#000") = new Moonpic(name, bg)
   }
 
-  val moonpixTab = Array(
+  val moonpicTab = Array(
     Pic("Moonburn"), Pic("Golden_Moon"),
     Pic("Lunar_eclipse_June_2011"), Pic("Solar_eclipse_1999"),
     Pic("Solar_eclipse_May_2013", "#130101")
@@ -48,19 +48,19 @@ class Luna {
 
   // snippet impl changed to val as (for now) this needs to get evaluated
   // only once
-  val moonpix: CssSel = {
+  val moonpic: CssSel = {
     val selector: JsExp = Jq("#moonbox a")
-    val startingPic = moonpixTab(4)
+    val startingPic = moonpicTab(4)
     S.appendJs(
       pageBg(startingPic.bg).cmd &
       (selector ~> fade(4 seconds, 1.0)).cmd
     )
     "img [src]"   #> startingPic.path &
     "a [style]"   #> "opacity: 0.01" &
-    "a [onclick]" #> moonpixSwitch(moonpixTab(0), 1 second, 2 seconds)
+    "a [onclick]" #> moonpicSwitch(moonpicTab(0), 1 second, 2 seconds)
   }
 
-  /* moonpix todo:
+  /* moonpic todo:
       + change background if pix requires it
       + simplify Moonpic (just class with default bg param in ctor)
       - really get random pics on each click
@@ -70,7 +70,7 @@ class Luna {
         in Smalltalk ver - then share code of first run and subsequent runs
         (requires switching via jqReplace or similar)
   */
-  private def moonpixSwitch(newPic: Moonpic,
+  private def moonpicSwitch(newPic: Moonpic,
     fadeOutTime: TimeSpan, fadeInTime: TimeSpan): JsExp = {
     val selector = jqThis
     val innerSelector = jqThisWith("img")
