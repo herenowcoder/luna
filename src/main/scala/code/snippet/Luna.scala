@@ -47,10 +47,11 @@ class Luna {
         via setInterval()/clearInterval()
       - really get random pics on each click
       - switch pics without clicking, via some semi-randomized timeout
-      - refactor
       - to be classy & elegant, bigger refactor to have sth like "emerge" element
         in Smalltalk ver - then share code of first run and subsequent runs
         (requires switching via jqReplace or similar)
+      - in the meantime craft some nice "dsl" to represent a subset
+        of Js/Jq/Dom manipupation
   */
   private def moonpicSwitch(newPic: Moonpic,
     fadeOutTime: TimeSpan, fadeInTime: TimeSpan): JsExp = {
