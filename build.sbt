@@ -2,7 +2,7 @@ name := "Luna site"
 
 version := "0.0.2-SNAPSHOT"
 
-organization := "net.liftweb"
+organization := "org.inthephase"
 
 scalaVersion := "2.11.7"
 
