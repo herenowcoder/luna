@@ -8,7 +8,7 @@ import net.liftweb.http.js.JsExp
 import net.liftweb.http.js.JE.{AnonFunc => JsAnonFunc} 
 import net.liftweb.http.js.jquery.JqJE.{Jq,JqAttr}
 
-import code.lib.JsGoodies._
+import code.lib.JsGoodies.{jqThis,jqThisWith,fade,pageBg}
 
 class Luna {
 
